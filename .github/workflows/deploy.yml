@@ -1,0 +1,32 @@
+name: CI/CD - Banking Function
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r DetectFraudFunction/requirements.txt
+
+      - name: Zip Function
+        run: zip -r functionapp.zip DetectFraudFunction
+
+      - name: Deploy to Azure Functions
+        uses: azure/webapps-deploy@v4
+        with:
+          app-name: ${{ secrets.FUNC_APP_NAME }}
+          slot-name: production
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: functionapp.zip

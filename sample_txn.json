@@ -1,0 +1,7 @@
+{
+    "TransactionID": "TXN1002",
+    "CustomerID": "CUST002",
+    "TransactionAmount": 60000,
+    "DeviceID": "DEV999",
+    "Location": "Mumbai"
+}

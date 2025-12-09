@@ -1,0 +1,17 @@
+{
+  "bindings": [
+    {
+      "name": "event",
+      "type": "eventGridTrigger",
+      "direction": "in"
+    },
+    {
+      "name": "outputQueueItem",
+      "type": "serviceBus",
+      "direction": "out",
+      "queueName": "ingestion-queue",
+      "connection": "SERVICE_BUS_CONN"
+    }
+  ]
+}
+
