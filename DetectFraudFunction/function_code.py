@@ -91,4 +91,4 @@ if __name__ == "__main__":
             return sample_txn
 
     main(DummyEvent())
-print("🚀 CI/CD Test: Build triggered")
+print("🚀 CI/CD Test: Build triggered successfully!")
