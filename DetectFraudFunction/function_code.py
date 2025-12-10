@@ -5,9 +5,7 @@ from datetime import datetime
 import azure.functions as func
 from azure.cosmos import CosmosClient, exceptions
 
-# ----------------------------
-# Cosmos DB Config
-# ----------------------------
+
 COSMOS_ENDPOINT = os.environ.get("COSMOS_CONN_STRING")
 COSMOS_KEY = os.environ.get("COSMOS_KEY")
 COSMOS_DB = os.environ.get("COSMOS_DB_NAME", "BankDB")
@@ -21,9 +19,7 @@ def get_cosmos_client():
         _cosmos_client = CosmosClient(COSMOS_ENDPOINT, COSMOS_KEY)
     return _cosmos_client
 
-# ----------------------------
-# Insert alert into Cosmos DB
-# ----------------------------
+
 def insert_alert(alert: dict):
     try:
         client = get_cosmos_client()
@@ -34,9 +30,7 @@ def insert_alert(alert: dict):
     except exceptions.CosmosHttpResponseError as e:
         logging.error(f"Cosmos insert failed: {e}")
 
-# ----------------------------
-# Fraud detection logic
-# ----------------------------
+
 def analyze_transaction(txn_data: dict) -> dict:
     alert = {}
     if txn_data.get("TransactionAmount", 0) >= 50000:  # High-value threshold
@@ -61,19 +55,19 @@ def main(events: list, outputQueueItem: func.Out[str]):
     logging.info("DetectFraudFunction triggered")
     for event in events:
         try:
-            # Ensure 'data' exists
+          
             txn_data = event.get("data")
             if not txn_data:
                 logging.error("No data found in event")
                 continue
 
-            # Analyze transaction
+           
             alert = analyze_transaction(txn_data)
 
             if alert:
-                # Insert into Cosmos DB
+                # Inserted into Cosmos DB
                 insert_alert(alert)
-                # Send to Service Bus output
+                # Sending to Service Bus output
                 outputQueueItem.set(json.dumps(alert))
                 logging.info(f"Fraud alert sent: {alert['id']}")
             else:

@@ -47,16 +47,16 @@ def detect_suspicious(txn):
 
 
 def main(msg: func.ServiceBusMessage):
-    logging.info("🔥 QueueProcessor started")
+    logging.info(" QueueProcessor started")
 
     payload = msg.get_body().decode()
-    logging.info(f"➡️ Received payload: {payload}")
+    logging.info(f"Received payload: {payload}")
 
     event = json.loads(payload)
     blob_url = event.get("blob_url")
 
     if not blob_url:
-        logging.error("❌ No blob_url found in message")
+        logging.error(" No blob_url found in message")
         return
 
     # Read Environment configs
@@ -68,14 +68,14 @@ def main(msg: func.ServiceBusMessage):
     upi_container_name = os.getenv("COSMOS_UPI_CONTAINER")
     alert_container_name = os.getenv("COSMOS_ALERTS_CONTAINER")
 
-    logging.info("🔐 Loaded environment settings successfully")
+    logging.info("Loaded environment settings successfully")
 
     # Extract container and blob name
     parts = blob_url.replace("https://", "").split("/")
     container_name = parts[1]
     blob_name = "/".join(parts[2:])
 
-    logging.info(f"📌 Blob Stored — Container: {container_name}, File: {blob_name}")
+    logging.info(f"Blob Stored — Container: {container_name}, File: {blob_name}")
 
     # Connect to Blob and download data
     blob_service = BlobServiceClient.from_connection_string(storage_conn)
@@ -83,7 +83,7 @@ def main(msg: func.ServiceBusMessage):
     blob_data = blob_client.download_blob().readall()
 
     df = pd.read_csv(StringIO(blob_data.decode()))
-    logging.info(f"📄 Total Records: {df.shape[0]}")
+    logging.info(f"Total Records: {df.shape[0]}")
 
     # Connect to Cosmos
     cosmos = CosmosClient.from_connection_string(cosmos_conn)
@@ -95,7 +95,7 @@ def main(msg: func.ServiceBusMessage):
 
     # Detect file type
     txn_type = classify_transaction(blob_name)
-    logging.info(f"📌 File Detected as Transaction Type: {txn_type}")
+    logging.info(f" File Detected as Transaction Type: {txn_type}")
 
     inserted_count = 0
     fraud_count = 0
@@ -153,6 +153,6 @@ def main(msg: func.ServiceBusMessage):
                 alert_container.upsert_item(alert_doc)
                 fraud_count += 1
 
-    logging.info(f"🚀 Inserted Transactions: {inserted_count}")
-    logging.info(f"🚨 Fraud Alerts Inserted: {fraud_count}")
-    logging.info("🎯 Processing Completed Successfully!")
+    logging.info(f"Inserted Transactions: {inserted_count}")
+    logging.info(f"Fraud Alerts Inserted: {fraud_count}")
+    logging.info("Processing Completed Successfully!")

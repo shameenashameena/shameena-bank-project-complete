@@ -12,10 +12,10 @@ def main(mytimer: func.TimerRequest) -> None:
     # Azure SQL connection
     conn = pyodbc.connect(
         "Driver={ODBC Driver 18 for SQL Server};"
-        "Server=tcp:shameenaserver.database.windows.net,1433;"
-        "Database=shameenasql;"
-        "Uid=shameena;"
-        "Pwd=snd@786123;"
+        "Server=tcp:;"
+        "Database=;"
+        "Uid=;"
+        "Pwd=;"
         "Encrypt=yes;"
         "TrustServerCertificate=no;"
         "Connection Timeout=30;"

@@ -18,7 +18,7 @@ def main(event: func.EventGridEvent, outputQueueItem: func.Out[str]):
                 blob_url = data["data"].get("url")
 
         if not blob_url:
-            logging.error("❌ Blob URL not found in event trigger body")
+            logging.error("Blob URL not found in event trigger body")
             return
 
         logging.info(f"Blob URL extracted: {blob_url}")
