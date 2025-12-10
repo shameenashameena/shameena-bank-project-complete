@@ -1,0 +1,4 @@
+order_id,customer_id,amount,city,order_date,week_number
+102,C002,4400,Delhi,2025-01-04,1
+104,C003,3500,Delhi,2025-01-06,2
+108,C003,4100,Delhi,2025-01-10,2
