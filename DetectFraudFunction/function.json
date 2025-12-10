@@ -3,8 +3,17 @@
   "bindings": [
     {
       "type": "eventGridTrigger",
-      "name": "event",
-      "direction": "in"
+      "direction": "in",
+      "name": "msg",
+      "queueName": "ingestion-queue",
+      "connection": "SERVICE_BUS_CONN"
+    },
+    {
+      "type": "serviceBus",
+      "direction": "out",
+      "name": "outputQueueItem",
+      "queueName": "fraud-notifications",
+      "connection": "SERVICE_BUS_CONN"
     }
   ]
 }
